@@ -26,6 +26,24 @@ Run:
 ./sync-from-home.sh
 ```
 
+## Install To Home
+Preview changes:
+
+```bash
+./install.sh --dry-run
+```
+
+Apply symlinks:
+
+```bash
+./install.sh
+```
+
+The installer:
+- backs up existing files into `~/.dotfiles-backup/<timestamp>/`
+- creates symlinks back into this repository
+- manages `~/.zshrc`, `~/.zshrc.d`, `~/.guides`, and selected `~/.config/*`
+
 ## Publish Strategy
 - Public repo: safe config only, this repository layout
 - Private repo: only needed if you want to store secrets or personal runtime state
