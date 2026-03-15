@@ -1,3 +1,5 @@
+@import url("/home/quaerendo/.cache/wal/theme-colors.css");
+
 * {
     font-family: "JetBrainsMono Nerd Font", "Noto Sans CJK SC", sans-serif;
     font-size: 14px;
@@ -8,15 +10,15 @@
 }
 
 window#waybar {
-    background: rgba(30, 30, 46, 0.85);
-    color: #cdd6f4;
+    background: alpha(@background, 0.82);
+    color: @foreground;
     border-radius: 16px;
-    border: 2px solid rgba(137, 180, 250, 0.3);
+    border: 2px solid alpha(@color4, 0.35);
 }
 
 #workspaces button {
     padding: 0 12px;
-    color: #a6adc8;
+    color: alpha(@foreground, 0.72);
     background: transparent;
     transition: all 0.3s ease;
     margin: 4px 2px;
@@ -24,31 +26,31 @@ window#waybar {
 }
 
 #workspaces button:hover {
-    background: rgba(137, 180, 250, 0.2);
-    color: #89b4fa;
+    background: alpha(@color4, 0.20);
+    color: @color4;
 }
 
 #workspaces button.active {
-    background: linear-gradient(45deg, #89b4fa, #cba6f7);
-    color: #1e1e2e;
+    background: linear-gradient(45deg, @color4, @color5);
+    color: @background;
     font-weight: bold;
 }
 
 #custom-logo {
     font-size: 20px;
     padding: 0 15px;
-    color: #cba6f7;
+    color: @color5;
     margin-left: 8px;
 }
 
 #window {
-    color: #cdd6f4;
+    color: @foreground;
     font-weight: 500;
     margin: 0 10px;
 }
 
 #clock {
-    color: #f9e2af;
+    color: @color3;
     font-weight: 600;
     padding: 0 20px;
 }
@@ -64,19 +66,19 @@ window#waybar {
 #tray {
     padding: 0 12px;
     margin: 4px 4px;
-    background: rgba(49, 50, 68, 0.6);
+    background: alpha(@color0, 0.45);
     border-radius: 10px;
     transition: all 0.3s ease;
 }
 
-#pulseaudio { color: #89b4fa; }
-#custom-mic { color: #f5c2e7; }
-#network { color: #94e2d5; }
-#bluetooth { color: #89b4fa; }
-#custom-weather { color: #f9e2af; }
-#cpu { color: #f38ba8; }
-#memory { color: #cba6f7; }
-#battery { color: #a6e3a1; }
+#pulseaudio { color: @color4; }
+#custom-mic { color: @color13; }
+#network { color: @color6; }
+#bluetooth { color: @color12; }
+#custom-weather { color: @color3; }
+#cpu { color: @color1; }
+#memory { color: @color5; }
+#battery { color: @color2; }
 
 #pulseaudio:hover,
 #custom-mic:hover,
@@ -86,27 +88,27 @@ window#waybar {
 #cpu:hover,
 #memory:hover,
 #battery:hover {
-    background: rgba(137, 180, 250, 0.3);
+    background: alpha(@color4, 0.30);
 }
 
 #custom-power {
     font-size: 18px;
-    color: #f38ba8;
+    color: @color1;
     padding: 0 15px;
     margin-right: 8px;
     transition: all 0.3s ease;
 }
 
 #custom-power:hover {
-    color: #eba0ac;
+    color: @color9;
 }
 
 #custom-mic.muted {
-    color: #6c7086;
+    color: alpha(@foreground, 0.45);
 }
 
-#battery.warning { color: #fab387; }
-#battery.critical { color: #f38ba8; animation: blink 1s linear infinite; }
+#battery.warning { color: @color11; }
+#battery.critical { color: @color1; animation: blink 1s linear infinite; }
 
 @keyframes blink {
     50% { opacity: 0.5; }
@@ -114,7 +116,7 @@ window#waybar {
 #custom-notification {
     font-family: "JetBrainsMono Nerd Font";
     font-size: 16px;
-    color: #cdd6f4; /* 字体颜色 */
+    color: @foreground; /* 字体颜色 */
     padding-left: 10px;
     padding-right: 10px;
     margin-right: 5px;
@@ -122,82 +124,82 @@ window#waybar {
 
 /* 当有通知时，让图标微微发光或变色 (可选) */
 #custom-notification.notification {
-    color: #f38ba8; /* 有通知变红 */
+    color: @color1; /* 有通知变红 */
 }
 
 /* Clock calendar tooltip readability */
 #clock tooltip {
-    background: rgba(30, 30, 46, 0.98);
-    border: 1px solid rgba(137, 180, 250, 0.45);
+    background: alpha(@background, 0.96);
+    border: 1px solid alpha(@color4, 0.45);
     border-radius: 10px;
-    color: #cdd6f4;
+    color: @foreground;
 }
 
 #clock tooltip label {
-    color: #cdd6f4;
+    color: @foreground;
 }
 
 #clock tooltip calendar {
-    color: #cdd6f4;
+    color: @foreground;
     background: transparent;
 }
 
 #clock tooltip calendar.header {
-    color: #f9e2af;
+    color: @color3;
 }
 
 #clock tooltip calendar.highlight {
-    color: #f38ba8;
+    color: @color1;
 }
 
 #clock tooltip calendar:selected {
-    background: rgba(137, 180, 250, 0.35);
-    color: #1e1e2e;
+    background: alpha(@color4, 0.35);
+    color: @background;
     border-radius: 6px;
 }
 
 /* Strong fallback for calendar tooltip (some Waybar themes need generic selectors) */
 tooltip {
-    background: rgba(24, 24, 37, 0.98);
-    color: #cdd6f4;
-    border: 1px solid rgba(137, 180, 250, 0.45);
+    background: alpha(@background, 0.98);
+    color: @foreground;
+    border: 1px solid alpha(@color4, 0.45);
     border-radius: 10px;
 }
 
 tooltip label,
 tooltip * {
-    color: #cdd6f4;
+    color: @foreground;
 }
 
 #clock tooltip,
 #clock tooltip * {
-    color: #cdd6f4;
+    color: @foreground;
 }
 
 #clock tooltip calendar {
     background: transparent;
-    color: #cdd6f4;
+    color: @foreground;
 }
 
 #clock tooltip calendar:selected {
-    background: rgba(137, 180, 250, 0.35);
-    color: #1e1e2e;
+    background: alpha(@color4, 0.35);
+    color: @background;
 }
 
 /* Match clock tooltip with bar acrylic tone */
 #clock tooltip,
 #clock tooltip * {
-    background: rgba(30, 30, 46, 0.85);
-    color: #cdd6f4;
-    border-color: rgba(137, 180, 250, 0.30);
+    background: alpha(@background, 0.85);
+    color: @foreground;
+    border-color: alpha(@color4, 0.30);
 }
 
 #clock tooltip {
-    border: 2px solid rgba(137, 180, 250, 0.30);
+    border: 2px solid alpha(@color4, 0.30);
     border-radius: 12px;
 }
 
 #clock tooltip calendar:selected {
-    background: rgba(137, 180, 250, 0.25);
-    color: #cdd6f4;
+    background: alpha(@color4, 0.25);
+    color: @foreground;
 }

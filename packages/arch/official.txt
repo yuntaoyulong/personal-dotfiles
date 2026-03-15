@@ -2,8 +2,8 @@ adobe-source-code-pro-fonts
 adobe-source-han-sans-cn-fonts
 adobe-source-han-serif-cn-fonts
 android-udev
-archlinux-wallpaper
 archlinuxcn-keyring
+archlinux-wallpaper
 asciiquarium
 aspell
 aspell-en
@@ -37,8 +37,8 @@ duf
 dust
 efibootmgr
 elementary-wallpapers
-ex-vi-compat
 expect
+ex-vi-compat
 eza
 fastfetch
 fcitx5
@@ -106,8 +106,8 @@ nano
 neomutt
 neovide
 neovim
-network-manager-applet
 networkmanager
+network-manager-applet
 networkmanager-dmenu
 nfs-utils
 noto-fonts
@@ -153,12 +153,12 @@ python-pyquery
 python-pywal
 python-requests
 qalculate-gtk
-qt5-quickcontrols2
 qt5ct
+qt5-quickcontrols2
 qt6-5compat
+qt6ct
 qt6-tools
 qt6-virtualkeyboard
-qt6ct
 quickshell
 rofi
 scrcpy

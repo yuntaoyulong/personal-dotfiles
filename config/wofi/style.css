@@ -1,3 +1,5 @@
+@import url("/home/quaerendo/.cache/wal/theme-colors.css");
+
 /* ================================================= */
 /* WOFI 终极美化配置 (去除所有默认白色背景)         */
 /* ================================================= */
@@ -17,11 +19,11 @@ window {
     margin: 0px;
     /* 核心背景：深蓝黑 (Catppuccin Mocha) + 85% 不透明度 */
     /* 如果觉得不够透，把 0.85 改成 0.6 */
-    background-color: rgba(5, 5, 5, 0.55);
+    background-color: alpha(@background, 0.72);
 
     
     border-radius: 24px;
-    border: 2px solid rgba(255, 255, 255, 0.1); /* 极细的高级灰边框 */
+    border: 2px solid alpha(@foreground, 0.12); /* 极细的高级灰边框 */
     
     /* 字体大小：配合 GDK_SCALE=1 使用，必须大！ */
     font-size: 14px;
@@ -35,8 +37,8 @@ window {
     border: none;
     
     /* 输入框背景：比主窗口稍亮一点的深色 */
-    background-color: rgba(255, 255, 255, 0.05); 
-    color: #cdd6f4; /* 字体颜色：亮白 */
+    background-color: alpha(@foreground, 0.08); 
+    color: @foreground; /* 字体颜色：亮白 */
 }
 
 /* 4. 内部容器：确保它们是透明的 */
@@ -61,20 +63,20 @@ window {
 #text {
     margin: 5px;
     border: none;
-    color: #cdd6f4;
+    color: @foreground;
 }
 
 /* 6. 选中项美化 (核心高级感来源) */
 #entry:selected {
     /* 不要用纯色背景，用渐变！ */
-    background-image: linear-gradient(90deg, rgba(137, 180, 250, 0.3) 0%, rgba(137, 180, 250, 0.05) 100%);
+    background-image: linear-gradient(90deg, alpha(@color4, 0.30) 0%, alpha(@color4, 0.06) 100%);
     
     /* 给选中项加个发光边框 */
-    border: 1px solid rgba(137, 180, 250, 0.5);
+    border: 1px solid alpha(@color4, 0.50);
     border-radius: 16px;
     
     /* 选中时文字变亮 */
-    color: #ffffff;
+    color: @color15;
 }
 
 /* 7. 图标微调 */

@@ -205,3 +205,21 @@ c1() {
 
   rm -f -- "$out" "$err"
 }
+
+dotpush() {
+  local msg="${1:-Update dotfiles}"
+  builtin cd "$HOME/personal-dotfiles" || return
+
+  bash ./scripts/export-arch-packages.sh || return
+  ./sync-from-home.sh || return
+  git status
+  git add . || return
+
+  if git diff --cached --quiet; then
+    echo "No changes to commit"
+    return 0
+  fi
+
+  git commit -m "$msg" || return
+  git push
+}
