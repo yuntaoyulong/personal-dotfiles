@@ -1,0 +1,181 @@
+{
+    "output": ["DP-3", "eDP-1"],
+    "layer": "top",
+    "position": "top",
+    "height": 38,
+    "spacing": 0,
+    "margin-top": 0,
+    "margin-left": 0,
+    "margin-right": 0,
+    
+    "modules-left": ["custom/logo", "hyprland/workspaces", "hyprland/window"],
+    "modules-center": ["custom/notification", "clock"],
+    "modules-right": ["pulseaudio", "custom/mic", "network", "bluetooth", "custom/weather", "cpu", "memory", "battery", "tray", "custom/power"],
+    
+    "custom/logo": {
+        "format": " ",
+        "tooltip": false,
+        "on-click": "wofi --show drun"
+    },
+    
+    "hyprland/workspaces": {
+        "disable-scroll": false,
+        "all-outputs": true,
+        "format": "{icon}",
+        "format-icons": {
+            "1": "󰆍",
+            "2": "󰈹",
+            "3": "󰨞",
+            "4": "󰭹",
+            "5": "󰇮",
+            "6": "󰇥",
+            "default": "󰝥"
+        },
+        "persistent-workspaces": {
+            "1": [],
+            "2": [],
+            "3": [],
+            "4": [],
+            "5": [],
+            "6": []
+        }
+    },
+    
+    "hyprland/window": {
+        "format": "{}",
+        "max-length": 50,
+        "separate-outputs": true
+    },
+    
+    "clock": {
+        "format": "{:%H:%M  %Y-%m-%d}",
+        "format-alt": "{:%A, %B %d, %Y (%R)}",
+        "tooltip-format": "<tt><small>{calendar}</small></tt>",
+        "calendar": {
+            "mode": "year",
+            "mode-mon-col": 3,
+            "weeks-pos": "right",
+            "on-scroll": 1,
+            "format": {
+                "months": "<span color='#cba6f7'><b>{}</b></span>",
+                "days": "<span color='#cdd6f4'>{}</span>",
+                "weeks": "<span color='#89b4fa'><b>W{}</b></span>",
+                "weekdays": "<span color='#f9e2af'><b>{}</b></span>",
+                "today": "<span color='#f38ba8'><b><u>{}</u></b></span>"
+            }
+        }
+    },
+    
+    "pulseaudio": {
+        "format": "{icon} {volume}%",
+        "format-muted": "󰖁 Muted",
+        "format-icons": {
+            "headphone": "󰋋",
+            "hands-free": "󰋋",
+            "headset": "󰋋",
+            "phone": "",
+            "portable": "",
+            "car": "",
+            "default": ["", "", ""]
+        },
+        "on-click": "pypr toggle media"
+    },
+
+    "custom/mic": {
+        "exec": "/home/quaerendo/.local/bin/waybar-mic status",
+        "return-type": "json",
+        "interval": 2,
+        "on-click": "/home/quaerendo/.local/bin/waybar-mic toggle"
+    },
+    
+    "network": {
+        "format-wifi": "󰖩 {essid}",
+        "format-ethernet": "󰈀 Wired",
+        "format-disconnected": "󰖪 Disconnected",
+        "tooltip-format": "{ifname}: {ipaddr}/{cidr}",
+        "on-click": "networkmanager_dmenu"
+    },
+
+    "bluetooth": {
+        "format": "󰂯",
+        "format-disabled": "󰂲",
+        "format-off": "󰂲",
+        "format-on": "󰂯",
+        "format-connected": "󰂱 {device_alias}",
+        "format-connected-battery": "󰂱 {device_alias} {device_battery_percentage}%",
+        "tooltip-format": "Bluetooth: <b>{status}</b>",
+        "tooltip-format-disabled": "Bluetooth: <b>Disabled</b>",
+        "tooltip-format-off": "Bluetooth: <b>Off</b>",
+        "tooltip-format-on": "Bluetooth: <b>On</b>\nController: <b>{controller_alias}</b>\nConnected devices: <b>{num_connections}</b>",
+        "tooltip-format-connected": "Bluetooth: <b>{num_connections} connected</b>\nActive device: <b>{device_alias}</b>\nController: <b>{controller_alias}</b>\n\n{device_enumerate}",
+        "tooltip-format-connected-battery": "Bluetooth: <b>{num_connections} connected</b>\nActive device: <b>{device_alias}</b> <b>{device_battery_percentage}%</b>\nController: <b>{controller_alias}</b>\n\n{device_enumerate}",
+        "tooltip-format-enumerate-connected": "• <b>{device_alias}</b>",
+        "tooltip-format-enumerate-connected-battery": "• <b>{device_alias}</b> <b>{device_battery_percentage}%</b>",
+        "format-no-controller": "",
+        "max-length": 24,
+        "interval": 5,
+        "on-click": "/home/quaerendo/.local/bin/bluetooth-menu"
+    },
+
+    "custom/weather": {
+        "exec": "/home/quaerendo/dotfiles/config/waybar/weather.sh",
+        "interval": 1800,
+        "tooltip": true,
+        "on-click": "/home/quaerendo/.local/bin/waybar-weather-launch"
+    },
+    
+    "cpu": {
+        "format": "󰻠 {usage}%",
+        "interval": 2,
+        "on-click": "kitty -e btop"
+    },
+    
+    "memory": {
+        "format": "󰍛 {percentage}%",
+        "interval": 2,
+        "on-click": "kitty -e btop"
+    },
+    
+    "battery": {
+        "states": {
+            "warning": 30,
+            "critical": 15
+        },
+        "format": "{icon} {capacity}%",
+        "format-charging": "󰂄 {capacity}%",
+        "format-plugged": "󰂄 {capacity}%",
+        "format-icons": ["󰂃", "󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"]
+    },
+    
+    "tray": {
+        "icon-size": 18,
+        "spacing": 10
+    },
+    
+    "custom/power": {
+        "format": "⏻",
+        "tooltip": false,
+        "on-click": "~/.config/hypr/scripts/powermenu.sh"
+    },
+
+  "custom/notification": {
+        "tooltip": false,
+        "format": "{icon}",
+        "format-icons": {
+            "notification": "<span foreground='red'><sup></sup></span>",
+            "none": "",
+            "dnd-notification": "<span foreground='red'><sup></sup></span>",
+            "dnd-none": "",
+            "inhibited-notification": "<span foreground='red'><sup></sup></span>",
+            "inhibited-none": "",
+            "dnd-inhibited-notification": "<span foreground='red'><sup></sup></span>",
+            "dnd-inhibited-none": ""
+        },
+        "return-type": "json",
+        "exec-if": "which swaync-client",
+        "exec": "swaync-client -swb",
+        "on-click": "swaync-client -t -sw",
+        "on-click-right": "swaync-client -d -sw",
+        "escape": true
+    }
+}

@@ -1,0 +1,84 @@
+/* ================================================= */
+/* WOFI 终极美化配置 (去除所有默认白色背景)         */
+/* ================================================= */
+
+/* 1. 全局复位：强制清除所有默认背景，防止白色漏出来 */
+* {
+    font-family: "FiraCode Nerd Font", "Inter";
+    font-weight: normal;
+    /* 这一行非常关键，去掉所有默认的白色底 */
+    letter-spacing: 0.5px; /* 微调字距，提升整体质感 */
+    background-color: transparent;
+    outline: none; 
+}
+
+/* 2. 主窗口：磨砂黑底 + 精致白边 */
+window {
+    margin: 0px;
+    /* 核心背景：深蓝黑 (Catppuccin Mocha) + 85% 不透明度 */
+    /* 如果觉得不够透，把 0.85 改成 0.6 */
+    background-color: rgba(5, 5, 5, 0.55);
+
+    
+    border-radius: 24px;
+    border: 2px solid rgba(255, 255, 255, 0.1); /* 极细的高级灰边框 */
+    
+    /* 字体大小：配合 GDK_SCALE=1 使用，必须大！ */
+    font-size: 14px;
+}
+
+/* 3. 输入框：必须把默认的白色杀掉，改成深色 */
+#input {
+    margin: 15px;
+    padding: 1px;
+    border-radius: 16px;
+    border: none;
+    
+    /* 输入框背景：比主窗口稍亮一点的深色 */
+    background-color: rgba(255, 255, 255, 0.05); 
+    color: #cdd6f4; /* 字体颜色：亮白 */
+}
+
+/* 4. 内部容器：确保它们是透明的 */
+#inner-box {
+    margin: 10px;
+    background-color: transparent;
+}
+
+#outer-box {
+    margin: 0px;
+    border: none;
+    background-color: transparent;
+}
+
+#scroll {
+    margin: 0px;
+    border: none;
+    background-color: transparent; /* 这里最容易出现白色，强制透明 */
+}
+
+/* 5. 列表文字 */
+#text {
+    margin: 5px;
+    border: none;
+    color: #cdd6f4;
+}
+
+/* 6. 选中项美化 (核心高级感来源) */
+#entry:selected {
+    /* 不要用纯色背景，用渐变！ */
+    background-image: linear-gradient(90deg, rgba(137, 180, 250, 0.3) 0%, rgba(137, 180, 250, 0.05) 100%);
+    
+    /* 给选中项加个发光边框 */
+    border: 1px solid rgba(137, 180, 250, 0.5);
+    border-radius: 16px;
+    
+    /* 选中时文字变亮 */
+    color: #ffffff;
+}
+
+/* 7. 图标微调 */
+#img {
+    margin-right: 15px;
+    background-color: transparent;
+}

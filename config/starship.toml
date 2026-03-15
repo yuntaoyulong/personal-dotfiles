@@ -1,0 +1,122 @@
+# ~/.config/starship.toml
+
+# 核心理念：
+# 1. 去掉所有 bg (背景色)
+# 2. 仅保留 fg (前景色) 和 bold (加粗)
+# 3. 只有文字和图标，没有任何 "" 或 "" 这种符号
+
+add_newline = true
+
+format = """
+$os\
+$directory\
+$git_branch\
+$git_status\
+$c\
+$python\
+$rust\
+$golang\
+$nodejs\
+$docker_context\
+$conda\
+$fill\
+$cmd_duration\
+$time\
+$line_break\
+$character"""
+
+# --- 1. OS 图标 ---
+[os]
+disabled = false
+# Arch 官方蓝，加粗
+style = "bold #1793d1"
+format = "[$symbol]($style)" # 注意这里没有空格，紧凑一点
+
+[os.symbols]
+Arch = " "
+Ubuntu = " "
+Debian = " "
+
+# --- 2. 路径 ---
+[directory]
+# 蓝色，稍微亮一点，容易看清
+style = "bold #89b4fa"
+# 路径前加一个空格隔开 OS 图标
+format = "[ $path ]($style)"
+truncation_length = 3
+truncation_symbol = "…/"
+read_only = " "
+
+# --- 3. Git ---
+[git_branch]
+symbol = " "
+style = "bold #a6e3a1" # 绿色，代表分支
+format = "[$symbol$branch]($style) "
+
+[git_status]
+style = "bold #f38ba8" # 红色，代表有变动
+format = '([$all_status$ahead_behind]($style) )'
+
+# --- 语言模块 (仅显示图标和版本，颜色鲜艳) ---
+
+[c]
+symbol = " "
+style = "bold #fab387" # 橙色
+format = "[$symbol($version) ]($style)"
+
+[python]
+symbol = " "
+style = "bold #f9e2af" # 黄色
+format = '[${symbol}${pyenv_prefix}(${version})($virtualenv) ]($style)'
+[rust]
+symbol = " "
+style = "bold #fab387"
+format = "[$symbol($version) ]($style)"
+
+[golang]
+symbol = " "
+style = "bold #89dceb" # 青色
+format = "[$symbol($version) ]($style)"
+
+[nodejs]
+symbol = " "
+style = "bold #a6e3a1"
+format = "[$symbol($version) ]($style)"
+
+[package]
+symbol = "󰏗 "
+style = "bold #cba6f7" # 紫色
+format = "[$symbol$version]($style) "
+
+# --- 右侧 ---
+
+[fill]
+symbol = " "
+
+[cmd_duration]
+min_time = 2000
+format = "[$duration](bold yellow)"
+
+[time]
+disabled = false
+time_format = "%R"
+format = '[  $time ](bold #6c7086)'
+
+# --- 换行与提示符 ---
+
+[line_break]
+disabled = false
+
+[character]
+# Insert 模式 (平时打字) 显示绿色箭头
+success_symbol = "[❯](bold green)"
+
+# Error (上个命令报错) 显示红色箭头
+error_symbol = "[❯](bold red)"
+
+# Normal 模式 (按下 Esc 后) 显示蓝色反向箭头 或者 [N]
+# 你也可以用 "❮" 或者 "V"
+vimcmd_symbol = "[❮](bold blue)" 
+
+# Visual 模式 (按 v 选择文本时)
+vimcmd_visual_symbol = "[V](bold yellow)"

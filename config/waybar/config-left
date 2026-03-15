@@ -1,0 +1,114 @@
+{
+    "output": ["HDMI-A-1"],
+    "layer": "top",
+    "position": "top",
+    "height": 38,
+    "spacing": 0,
+    "margin-top": 0,
+    "margin-left": 0,
+    "margin-right": 0,
+
+    "modules-left": ["custom/logo", "hyprland/window"],
+    "modules-center": ["clock"],
+    "modules-right": ["pulseaudio", "custom/mic", "network", "bluetooth", "custom/weather", "battery"],
+
+    "custom/logo": {
+        "format": " ",
+        "tooltip": false,
+        "on-click": "wofi --show drun"
+    },
+
+    "hyprland/window": {
+        "format": "{}",
+        "max-length": 28,
+        "separate-outputs": true
+    },
+
+    "clock": {
+        "format": "{:%H:%M}",
+        "format-alt": "{:%Y-%m-%d %H:%M}",
+        "tooltip-format": "<tt><small>{calendar}</small></tt>",
+        "calendar": {
+            "mode": "year",
+            "mode-mon-col": 3,
+            "weeks-pos": "right",
+            "on-scroll": 1,
+            "format": {
+                "months": "<span color='#cba6f7'><b>{}</b></span>",
+                "days": "<span color='#cdd6f4'>{}</span>",
+                "weeks": "<span color='#89b4fa'><b>W{}</b></span>",
+                "weekdays": "<span color='#f9e2af'><b>{}</b></span>",
+                "today": "<span color='#f38ba8'><b><u>{}</u></b></span>"
+            }
+        }
+    },
+
+    "pulseaudio": {
+        "format": "{icon} {volume}%",
+        "format-muted": "󰖁",
+        "format-icons": {
+            "headphone": "󰋋",
+            "hands-free": "󰋋",
+            "headset": "󰋋",
+            "phone": "",
+            "portable": "",
+            "car": "",
+            "default": ["", "", ""]
+        },
+        "on-click": "pypr toggle media"
+    },
+
+    "custom/mic": {
+        "exec": "/home/quaerendo/.local/bin/waybar-mic status",
+        "return-type": "json",
+        "interval": 2,
+        "on-click": "/home/quaerendo/.local/bin/waybar-mic toggle"
+    },
+
+    "network": {
+        "format-wifi": "󰖩",
+        "format-ethernet": "󰈀",
+        "format-disconnected": "󰖪",
+        "tooltip-format": "{ifname}: {ipaddr}/{cidr}",
+        "on-click": "networkmanager_dmenu"
+    },
+
+    "bluetooth": {
+        "format": "󰂯",
+        "format-disabled": "󰂲",
+        "format-off": "󰂲",
+        "format-on": "󰂯",
+        "format-connected": "󰂱",
+        "format-connected-battery": "󰂱 {device_battery_percentage}%",
+        "tooltip-format": "Bluetooth: <b>{status}</b>",
+        "tooltip-format-disabled": "Bluetooth: <b>Disabled</b>",
+        "tooltip-format-off": "Bluetooth: <b>Off</b>",
+        "tooltip-format-on": "Bluetooth: <b>On</b>\nController: <b>{controller_alias}</b>\nConnected devices: <b>{num_connections}</b>",
+        "tooltip-format-connected": "Bluetooth: <b>{num_connections} connected</b>\nActive device: <b>{device_alias}</b>\nController: <b>{controller_alias}</b>\n\n{device_enumerate}",
+        "tooltip-format-connected-battery": "Bluetooth: <b>{num_connections} connected</b>\nActive device: <b>{device_alias}</b> <b>{device_battery_percentage}%</b>\nController: <b>{controller_alias}</b>\n\n{device_enumerate}",
+        "tooltip-format-enumerate-connected": "• <b>{device_alias}</b>",
+        "tooltip-format-enumerate-connected-battery": "• <b>{device_alias}</b> <b>{device_battery_percentage}%</b>",
+        "format-no-controller": "",
+        "max-length": 12,
+        "interval": 5,
+        "on-click": "/home/quaerendo/.local/bin/bluetooth-menu"
+    },
+
+    "custom/weather": {
+        "exec": "/home/quaerendo/dotfiles/config/waybar/weather.sh",
+        "interval": 1800,
+        "tooltip": true,
+        "on-click": "/home/quaerendo/.local/bin/waybar-weather-launch"
+    },
+
+    "battery": {
+        "states": {
+            "warning": 30,
+            "critical": 15
+        },
+        "format": "{icon} {capacity}%",
+        "format-charging": "󰂄 {capacity}%",
+        "format-plugged": "󰂄 {capacity}%",
+        "format-icons": ["󰂃", "󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"]
+    }
+}

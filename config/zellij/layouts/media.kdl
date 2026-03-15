@@ -1,0 +1,31 @@
+layout {
+    pane split_direction="vertical" {
+        // 左侧：输出设备选择 + 交互式音量调节
+        pane split_direction="horizontal" {
+            pane command="/home/quaerendo/.local/bin/audio-sink-picker" {
+                name "Output Device"
+                size "35%"
+            }
+            pane command="pulsemixer" {
+                name "Volume Control"
+                size "65%"
+            }
+            size "40%"
+        }
+        // 右侧：播放状态与媒体控制
+        pane split_direction="horizontal" {
+            // 显示当前播放的歌曲/视频信息
+            pane command="watch" {
+                args "-n" "1" "playerctl metadata --format 'Now Playing: {{title}} \nArtist: {{artist}} \nStatus: {{status}}'"
+                name "Media Info"
+            }
+            // 一个简单的快捷指令面板 (或是运行一个小宠物的区域)
+            pane command="asciiquarium" {
+                name "Visualizer"
+            }
+        }
+    }
+    pane size=1 borderless=true {
+        plugin location="zellij:compact-bar"
+    }
+}

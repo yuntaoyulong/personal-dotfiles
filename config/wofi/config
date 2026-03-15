@@ -1,0 +1,18 @@
+# 位置：~/.config/wofi/config
+mode=drun
+show=drun
+width=450
+height=320
+offset_y=20
+# 隐藏滚动条，更简洁
+hide_scroll=true
+# 允许显示图标
+allow_images=true
+# 图标大小
+image_size=24
+# 搜索匹配模式
+insensitive=true
+# 提示词
+prompt=Search...
+# 只有一行，不分列
+columns=1

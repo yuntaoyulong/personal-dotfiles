@@ -1,0 +1,12 @@
+layout {
+    pane split_direction="vertical" {
+        // 上面是宽敞的猫咪活动室
+        pane command="petcat" {
+            name "🐱 智能猫咪 (Python Engine)"
+            size "70%"
+        }
+        
+        // 下面保留你的天气和鱼
+    }
+}
+

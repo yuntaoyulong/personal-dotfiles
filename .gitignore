@@ -1,0 +1,17 @@
+.DS_Store
+*.swp
+*.swo
+*.tmp
+*.bak
+*.log
+
+config/zellij/config.kdl.bak
+shell/.zshrc.d/10-zinit.zsh.bak_20260306
+
+config/nvim/lazy-lock.json
+config/nvim/.nvimlog
+
+config/waybar/pomodoro_state.json
+config/waybar/*.cache
+
+config/fastfetch/arch.png

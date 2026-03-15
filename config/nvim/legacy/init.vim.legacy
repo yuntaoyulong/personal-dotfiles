@@ -1,0 +1,239 @@
+" Environment Variable "{{{
+let $DOTPATH = expand('$HOME/.dotfiles')
+let $CUSDATA = expand('$DOTPATH/data/vimdata')
+let $BUNDLE = expand('$HOME/.bundle')
+let $PLUG_DIR = expand('$BUNDLE/vim-plug')
+let $MYPLUG = expand('$HOME/.config/nvim')
+let $INPLUG = expand('$MYPLUG/inplug')
+let $MYORG = expand('$DOTFILES/myorg')
+let $MYSNIP = expand('$MYPLUG/mysnippets')
+let $RIPGREP_CONFIG_PATH = expand('$HOME/.config/rgrc')
+let $EDITOR = 'tvim -w'
+let $VIM_TERMINAL = 1
+let $NVIM_TUI_ENABLE_TRUE_COLOR = 1
+let $VIMCACHE = stdpath('cache')
+let $BAT_STYLE="default"
+" let $PATH = expand('$DOTPATH/vimbin:') . $PATH
+
+if has('vim_starting')
+  let $ORIG_PWD = getcwd()
+endif
+
+unlet $SSH_TTY
+"}}}
+
+" Variables "{{{
+let g:myname = "Litian ZHENG"
+let g:myemail = 'aotianzhihuo@foxmail.com'
+let g:restart_session = expand('$VIMCACHE/restart_session.vim')
+
+" let g:do_filetype_lua = 1
+" let g:did_load_filetypes = 0
+"}}}
+
+" Include Plug "{{{
+call plug#init()
+
+call plug#begin(expand($BUNDLE))
+
+call vim#source("$INPLUG")
+" 日志高亮插件 (把 .log, .log.1 等文件变成彩色)
+call plug#end() " Should run at last
+"}}}
+
+call plug#load_lua_plugins()
+call vim#run_post_handlers()
+
+augroup run_vimenter_handlers
+  autocmd VimEnter * call vim#run_post_vimenter()
+augroup END
+" 使 yank 操作自动使用系统剪贴板（+ 寄存器）
+set clipboard=unnamedplus
+
+" 可选：在可视模式下用 Ctrl+C 复制到系统剪贴板
+vnoremap <C-c> "+y
+" vim:set fdm=marker:
+" =======================================
+" Neovide Settings (GUI 专用毛玻璃配置)
+" =======================================
+if exists("g:neovide")
+    " ✅ 修正：将 transparency 改为 opacity
+    let g:neovide_opacity = 0.8
+    
+    " 告诉 Neovide 开启模糊支持
+    let g:neovide_window_blurred = v:true
+    
+    " 浮动窗口模糊
+    let g:neovide_floating_blur_amount_x = 2.0
+    let g:neovide_floating_blur_amount_y = 2.0
+    
+    " 酷炫的光标特效
+    let g:neovide_cursor_vfx_mode = "railgun"
+    
+    " 如果字体太小，可以用这个放大一点 (可选)
+    " let g:neovide_scale_factor = 1.0
+endif
+let mapleader = " "
+
+" 2. Lua 配置块
+lua << EOF
+-- 引入 Telescope 内置模块
+local builtin = require('telescope.builtin')
+
+-- 定义快捷键
+-- <leader>ff -> 查找文件 (Find Files)
+vim.keymap.set('n', '<leader>ff', builtin.find_files, {})
+
+-- <leader>fg -> 查找内容 (Live Grep - 需要 ripgrep)
+vim.keymap.set('n', '<leader>fg', builtin.live_grep, {})
+
+-- <leader>fb -> 查找已打开的缓冲区 (Buffers)
+vim.keymap.set('n', '<leader>fb', builtin.buffers, {})
+
+-- <leader>fh -> 查找帮助文档 (Help Tags)
+vim.keymap.set('n', '<leader>fh', builtin.help_tags, {})
+
+EOF
+" =============================================================================
+" 🎨 格式增强配置 (Treesitter & Markdown)
+" =============================================================================
+lua << EOF
+-- 1. Treesitter 基础配置 (安全加载)
+local ts_status, ts = pcall(require, "nvim-treesitter.configs")
+if ts_status then
+    ts.setup {
+      ensure_installed = { "json", "markdown", "markdown_inline", "rust", "lua", "yaml", "toml", "bash", "csv" },
+      highlight = { enable = true },
+      indent = { enable = true },
+    }
+end
+
+-- 2. Render-Markdown 配置 (安全加载)
+local rm_status, rm = pcall(require, "render-markdown")
+if rm_status then
+    rm.setup({
+        heading = { icons = { '① ', '② ', '③ ', '④ ', '⑤ ', '⑥ ' } },
+        code = { style = 'language', left_pad = 2 },
+    })
+end
+
+-- 3. 自动折叠设置
+vim.opt.foldmethod = "expr"
+vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
+vim.opt.foldenable = false -- 默认不折叠，手动按 za 开合
+EOF
+
+" =============================================================================
+" 🖼️ Kitty 终端内图片预览 (Markdown)
+" =============================================================================
+lua << EOF
+local ok, image = pcall(require, "image")
+if ok then
+  image.setup({
+    backend = "kitty",
+    integrations = {
+      markdown = {
+        enabled = true,
+        only_render_image_at_cursor = true,
+        clear_in_insert_mode = false,
+        download_remote_images = true,
+      },
+    },
+  })
+end
+EOF
+
+" -----------------------------------------------------------------------------
+" ⚠️ 注意：下面回到了 Vimscript 环境，注释必须用双引号 (")
+" -----------------------------------------------------------------------------
+
+" 4. 针对不同文件类型的增强命令
+augroup filetype_enhancement
+    autocmd!
+    " JSON 自动格式化和美化 (需要系统安装了 jq)
+    autocmd FileType json command! Jq %!jq .
+    " Markdown 开启 Conceal (隐藏标记符，直接显示渲染效果)
+    autocmd FileType markdown setlocal conceallevel=2
+augroup END
+
+lua << EOF
+require("flash").setup()
+
+-- 将原来的 "s" 改为 "<leader>s" (即 Space + s)
+-- 这样既保留了原生的 s 键功能，又防止了和其他插件冲突
+vim.keymap.set({"n", "x", "o"}, "<leader>s", function() require("flash").jump() end, {desc = "Flash Jump"})
+
+-- 把远程操作改为 Space + S
+vim.keymap.set({"n", "x", "o"}, "<leader>S", function() require("flash").remote() end, {desc = "Flash Remote"})
+local alpha = require("alpha")
+local dashboard = require("alpha.themes.dashboard")
+
+-- 1. 经典巨型 ASCII Logo (Doom 风格)
+dashboard.section.header.val = {
+    [[                                   ]],
+    [[                                   ]],
+    [[   ███╗   ██╗███████╗ ██████╗      ]],
+    [[   ████╗  ██║██╔════╝██╔═══██╗     ]],
+    [[   ██╔██╗ ██║█████╗  ██║   ██║     ]],
+    [[   ██║╚██╗██║██╔══╝  ██║   ██║     ]],
+    [[   ██║ ╚████║███████╗╚██████╔╝     ]],
+    [[   ╚═╝  ╚═══╝╚══════╝ ╚═════╝      ]],
+    [[                                   ]],
+    [[      N  E  O  V  I  M             ]],
+    [[                                   ]],
+}
+
+-- 2. 设置按钮 (图标 + 文字 + 快捷键)
+dashboard.section.buttons.val = {
+    dashboard.button("e", "  New file", ":ene <BAR> startinsert <CR>"),
+    dashboard.button("f", "󰈞  Find file", ":Telescope find_files <CR>"),
+    dashboard.button("r", "  Recently used files", ":Telescope oldfiles <CR>"),
+    dashboard.button("t", "󰊄  Find text", ":Telescope live_grep <CR>"),
+    dashboard.button("c", "  Configuration", ":e $MYVIMRC <CR>"),
+    dashboard.button("u", "  Update plugins", ":PlugUpdate<CR>"),
+    dashboard.button("q", "󰅚  Quit Neovim", ":qa<CR>"),
+}
+
+-- 3. 底部状态栏 (显示插件数量和启动时间 - 装逼必备)
+-- 这一步会计算加载了多少个插件，非常极客
+local function footer()
+    -- 获取 vim-plug 的插件数量
+    local total_plugins = 0
+    local stats = vim.fn['plug#end']() 
+    -- 由于 vim-plug 没有直接的 API 返回数量，这里我们写一段简单的逻辑
+    -- 或者直接显示静态文字，但动态的最帅：
+    local version = vim.version()
+    local print_version = "v" .. version.major .. "." .. version.minor .. "." .. version.patch
+    local date = os.date("%d-%m-%Y")
+    return "⚡ Neovim " .. print_version .. "    Loaded in " .. "0.0xx" .. " ms"
+end
+
+dashboard.section.footer.val = footer()
+
+-- 4. 样式调整 (让它居中、好看)
+dashboard.section.header.opts.hl = "Type"
+dashboard.section.buttons.opts.hl = "Macro"
+dashboard.section.footer.opts.hl = "Comment"
+
+dashboard.opts.layout[1].val = 8 -- 顶部边距
+
+-- 5. 启动配置
+alpha.setup(dashboard.opts)
+
+-- 禁用启动页上的状态栏和标签栏 (让界面更干净)
+vim.api.nvim_create_autocmd("User", {
+    pattern = "AlphaReady",
+    callback = function()
+        vim.opt.laststatus = 0
+        vim.opt.showtabline = 0
+    end,
+})
+vim.api.nvim_create_autocmd("BufUnload", {
+    buffer = 0,
+    callback = function()
+        vim.opt.laststatus = 2 -- 退出启动页时恢复
+        vim.opt.showtabline = 2
+    end,
+})
+
+EOF

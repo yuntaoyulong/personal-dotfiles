@@ -1,0 +1,21 @@
+layout {
+    // 定义一个全屏的工作区，分成左右两部分
+    pane split_direction="vertical" {
+        // 左侧：天气与环境 (Tenki)
+        pane command="tenki" {
+            name "🌤️ 天气预报"
+            size "40%"
+        }
+        
+        // 右侧：水族馆 (Asciiquarium)
+        pane command="asciiquarium" {
+            name "🐟 终端水族馆"
+            size "60%"
+        }
+    }
+    
+    // 隐藏底部的状态栏和页签，让画面更纯净
+    pane size=1 borderless=true {
+        plugin location="zellij:compact-bar"
+    }
+}
