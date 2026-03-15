@@ -95,6 +95,20 @@ Examples:
 
 On Arch, installation is manifest-driven. On non-Arch systems, package installation stays baseline-only and best-effort.
 
+## Health Check
+After a fresh install, run:
+
+```bash
+bash ./scripts/health-check.sh
+```
+
+This checks:
+- key commands
+- linked config paths
+- git / gh / ssh readiness
+- pacman repo basics
+- selected systemd units
+
 ## Publish Strategy
 - Public repo: safe config only, this repository layout
 - Private repo: only needed if you want to store secrets or personal runtime state
