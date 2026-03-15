@@ -9,6 +9,7 @@ ARCH_PKG_DIR="$ROOT/packages/arch"
 DRY_RUN=0
 DO_PACKAGES=1
 DO_LINKS=1
+DO_ENABLE_SERVICES=1
 PKG_MANAGER=""
 
 PACMAN_PACKAGES=(
@@ -44,6 +45,7 @@ Options:
   --dry-run         Preview actions without changing anything
   --links-only      Only back up and symlink config files
   --packages-only   Only install packages
+  --no-services     Do not enable systemd services/timers
   --manager NAME    Force package manager: pacman|apt|dnf|yum
   -h, --help        Show this help
 
@@ -194,16 +196,29 @@ install_links() {
   link_path "$ROOT/guides" "$HOME_DIR/.guides"
 
   link_path "$ROOT/config/atuin" "$HOME_DIR/.config/atuin"
+  link_path "$ROOT/config/autostart" "$HOME_DIR/.config/autostart"
   link_path "$ROOT/config/fastfetch" "$HOME_DIR/.config/fastfetch"
+  link_path "$ROOT/config/fcitx5" "$HOME_DIR/.config/fcitx5"
   link_path "$ROOT/config/kitty" "$HOME_DIR/.config/kitty"
   link_path "$ROOT/config/mako" "$HOME_DIR/.config/mako"
+  link_path "$ROOT/config/mimeapps.list" "$HOME_DIR/.config/mimeapps.list"
   link_path "$ROOT/config/nvim" "$HOME_DIR/.config/nvim"
+  link_path "$ROOT/config/systemd/user" "$HOME_DIR/.config/systemd/user"
   link_path "$ROOT/config/waybar" "$HOME_DIR/.config/waybar"
   link_path "$ROOT/config/wofi" "$HOME_DIR/.config/wofi"
   link_path "$ROOT/config/zellij" "$HOME_DIR/.config/zellij"
 
+  link_path "$ROOT/local/bin/mail-sync-notify" "$HOME_DIR/.local/bin/mail-sync-notify"
   link_path "$ROOT/config/starship.toml" "$HOME_DIR/.config/starship.toml"
   link_path "$ROOT/config/topgrade.toml" "$HOME_DIR/.config/topgrade.toml"
+}
+
+enable_services_if_needed() {
+  local manager
+  manager="$(detect_manager)"
+  if [[ "$manager" == "pacman" ]]; then
+    run_cmd bash "$ROOT/scripts/enable-arch-services.sh"
+  fi
 }
 
 while (( $# > 0 )); do
@@ -218,6 +233,9 @@ while (( $# > 0 )); do
     --packages-only)
       DO_PACKAGES=1
       DO_LINKS=0
+      ;;
+    --no-services)
+      DO_ENABLE_SERVICES=0
       ;;
     --manager)
       shift
@@ -246,6 +264,10 @@ fi
 
 if (( DO_LINKS )); then
   install_links
+fi
+
+if (( DO_ENABLE_SERVICES )); then
+  enable_services_if_needed
 fi
 
 if (( DRY_RUN )); then

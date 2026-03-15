@@ -1,0 +1,6 @@
+[Unit]
+Description=Sync QQ mail and send desktop notifications
+
+[Service]
+Type=oneshot
+ExecStart=%h/.local/bin/mail-sync-notify

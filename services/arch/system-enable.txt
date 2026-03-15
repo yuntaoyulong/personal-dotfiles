@@ -1,0 +1,5 @@
+NetworkManager.service
+bluetooth.service
+docker.service
+power-profiles-daemon.service
+openrazer-daemon.service

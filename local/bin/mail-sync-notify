@@ -1,0 +1,42 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+MAILDIR="${HOME}/Mail/qq/INBOX/new"
+STATE_DIR="${HOME}/.local/state/mail-notify"
+STATE_FILE="${STATE_DIR}/inbox_new.list"
+LOCK_FILE="${STATE_DIR}/lock"
+
+mkdir -p "$STATE_DIR"
+exec 9>"$LOCK_FILE"
+flock -n 9 || exit 0
+
+# Sync first; fail quietly but keep journal record.
+if ! timeout 180s mbsync -a >/dev/null 2>&1; then
+  exit 0
+fi
+
+if [ ! -d "$MAILDIR" ]; then
+  exit 0
+fi
+
+TMP_NOW=$(mktemp)
+TMP_NEW=$(mktemp)
+trap 'rm -f "$TMP_NOW" "$TMP_NEW"' EXIT
+
+find "$MAILDIR" -maxdepth 1 -type f -printf '%f\n' | sort > "$TMP_NOW"
+
+# First run only seeds baseline to avoid notification flood.
+if [ ! -f "$STATE_FILE" ]; then
+  cp "$TMP_NOW" "$STATE_FILE"
+  exit 0
+fi
+
+comm -13 "$STATE_FILE" "$TMP_NOW" > "$TMP_NEW"
+NEW_COUNT=$(wc -l < "$TMP_NEW" | tr -d ' ')
+
+if [ "$NEW_COUNT" -gt 0 ]; then
+  PREVIEW=$(head -n 3 "$TMP_NEW" | sed 's/:2,.*$//' | tr '\n' '; ' | sed 's/; $//')
+  notify-send "📬 新邮件 ${NEW_COUNT} 封" "QQ 邮箱收到了新邮件\n${PREVIEW}" -a "NeoMutt Mail" -i mail-unread
+fi
+
+cp "$TMP_NOW" "$STATE_FILE"

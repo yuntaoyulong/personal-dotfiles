@@ -1,0 +1,12 @@
+[Unit]
+Description=Run mail sync/notify periodically
+
+[Timer]
+OnBootSec=1min
+OnUnitActiveSec=2min
+AccuracySec=15s
+Persistent=true
+Unit=mail-sync-notify.service
+
+[Install]
+WantedBy=timers.target

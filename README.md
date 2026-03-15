@@ -6,9 +6,12 @@ Personal Linux workstation configuration backup.
 - `shell/`: zsh entrypoint and modular zsh config
 - `config/nvim/`: Neovim config
 - `config/atuin/`, `config/kitty/`, `config/mako/`, `config/zellij/`
+- `config/fcitx5/`, `config/autostart/`, `config/systemd/user/`
 - `config/starship.toml`, `config/topgrade.toml`
 - `config/fastfetch/`, `config/waybar/`, `config/wofi/`
+- `config/mimeapps.list`
 - `guides/`: workflow notes and operational guides
+- `local/bin/`: local helper scripts needed by user services
 
 ## Not Included
 - Authentication tokens
@@ -43,7 +46,8 @@ The installer:
 - installs baseline packages first
 - backs up existing files into `~/.dotfiles-backup/<timestamp>/`
 - creates symlinks back into this repository
-- manages `~/.zshrc`, `~/.zshrc.d`, `~/.guides`, and selected `~/.config/*`
+- manages `~/.zshrc`, `~/.zshrc.d`, `~/.guides`, selected `~/.config/*`, and `~/.local/bin/mail-sync-notify`
+- on Arch, can also enable selected system services and user timers
 
 ### Package Manager Support
 - `pacman`: primary and required target
@@ -72,7 +76,8 @@ This will:
 - install official packages with `pacman`
 - bootstrap `yay` if needed
 - install AUR packages from the manifest
-- then link your config files
+- link your config files
+- enable selected system services and user timers
 
 Examples:
 
@@ -80,6 +85,7 @@ Examples:
 ./install.sh --dry-run
 ./install.sh --links-only
 ./install.sh --packages-only
+./install.sh --no-services
 ./install.sh --manager pacman
 ./install.sh --manager apt
 ```
