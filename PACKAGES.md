@@ -4,6 +4,7 @@ This repository supports package bootstrapping during install.
 
 ## Primary Target
 - `pacman` is the primary target and the best-maintained package list.
+- On Arch, use the real manifests under `packages/arch/` instead of a short handcrafted package set.
 
 ## Compatibility Targets
 - `apt`
@@ -31,6 +32,7 @@ These compatibility targets are best-effort, because package names and availabil
 On Arch:
 
 ```bash
+bash ./scripts/export-arch-packages.sh
 ./install.sh --manager pacman
 ```
 

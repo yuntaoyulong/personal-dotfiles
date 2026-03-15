@@ -50,6 +50,30 @@ The installer:
 - `apt`: optional compatibility path
 - `dnf` / `yum`: optional compatibility path
 
+### Arch Full Restore
+For Arch, this repo supports full package restoration from manifests:
+
+- `packages/arch/official.txt`
+- `packages/arch/aur.txt`
+
+Refresh those manifests from the current machine:
+
+```bash
+bash ./scripts/export-arch-packages.sh
+```
+
+Then on a fresh Arch install:
+
+```bash
+bash ./install.sh --manager pacman
+```
+
+This will:
+- install official packages with `pacman`
+- bootstrap `yay` if needed
+- install AUR packages from the manifest
+- then link your config files
+
 Examples:
 
 ```bash
@@ -60,7 +84,7 @@ Examples:
 ./install.sh --manager apt
 ```
 
-Package installation is intentionally baseline-only: terminal, editor, shell, prompt, fuzzy finder, search, launcher, and status bar tools used by this repo.
+On Arch, installation is manifest-driven. On non-Arch systems, package installation stays baseline-only and best-effort.
 
 ## Publish Strategy
 - Public repo: safe config only, this repository layout

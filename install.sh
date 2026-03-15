@@ -4,6 +4,7 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 HOME_DIR="${HOME:-/home/quaerendo}"
 BACKUP_ROOT="${HOME_DIR}/.dotfiles-backup/$(date +%Y%m%d-%H%M%S)"
+ARCH_PKG_DIR="$ROOT/packages/arch"
 
 DRY_RUN=0
 DO_PACKAGES=1
@@ -52,6 +53,7 @@ Default behavior:
 
 Notes:
   - `pacman` is the primary and best-supported path.
+  - On Arch, package manifests in `packages/arch/` take precedence.
   - `apt` / `dnf` / `yum` are best-effort compatibility paths.
 EOF
 }
@@ -124,9 +126,32 @@ detect_manager() {
 }
 
 install_packages_pacman() {
-  local packages=("${PACMAN_PACKAGES[@]}")
-  log "installing packages with pacman"
-  run_cmd sudo pacman -S --needed "${packages[@]}"
+  local official_manifest="$ARCH_PKG_DIR/official.txt"
+  local aur_manifest="$ARCH_PKG_DIR/aur.txt"
+
+  if [[ -f "$official_manifest" ]]; then
+    log "installing Arch official packages from manifest"
+    mapfile -t official_packages < "$official_manifest"
+    if (( ${#official_packages[@]} > 0 )); then
+      run_cmd sudo pacman -S --needed "${official_packages[@]}"
+    fi
+  else
+    local packages=("${PACMAN_PACKAGES[@]}")
+    log "installing packages with pacman"
+    run_cmd sudo pacman -S --needed "${packages[@]}"
+  fi
+
+  if [[ -f "$aur_manifest" ]]; then
+    mapfile -t aur_packages < "$aur_manifest"
+    if (( ${#aur_packages[@]} > 0 )); then
+      if ! command -v yay >/dev/null 2>&1; then
+        log "yay not found; bootstrapping yay for AUR packages"
+        run_cmd bash "$ROOT/scripts/bootstrap-yay.sh"
+      fi
+      log "installing Arch AUR packages from manifest"
+      run_cmd yay -S --needed "${aur_packages[@]}"
+    fi
+  fi
 }
 
 install_packages_apt() {
