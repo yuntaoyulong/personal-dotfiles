@@ -131,6 +131,9 @@ install_packages_pacman() {
   local official_manifest="$ARCH_PKG_DIR/official.txt"
   local aur_manifest="$ARCH_PKG_DIR/aur.txt"
 
+  log "initializing Arch package manager configuration"
+  run_cmd bash "$ROOT/scripts/init-arch-base.sh"
+
   if [[ -f "$official_manifest" ]]; then
     log "installing Arch official packages from manifest"
     mapfile -t official_packages < "$official_manifest"

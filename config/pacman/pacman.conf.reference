@@ -1,0 +1,14 @@
+#
+# Reference values used by this dotfiles repository
+#
+[options]
+Color
+VerbosePkgLists
+ParallelDownloads = 5
+ILoveCandy
+
+[multilib]
+Include = /etc/pacman.d/mirrorlist
+
+[archlinuxcn]
+Server = https://mirrors.ustc.edu.cn/archlinuxcn/$arch

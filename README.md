@@ -59,6 +59,8 @@ For Arch, this repo supports full package restoration from manifests:
 
 - `packages/arch/official.txt`
 - `packages/arch/aur.txt`
+- `scripts/init-arch-base.sh`
+- `config/pacman/pacman.conf.reference`
 
 Refresh those manifests from the current machine:
 
@@ -73,6 +75,7 @@ bash ./install.sh --manager pacman
 ```
 
 This will:
+- initialize `pacman.conf`, `multilib`, `archlinuxcn`, and mirrors
 - install official packages with `pacman`
 - bootstrap `yay` if needed
 - install AUR packages from the manifest
